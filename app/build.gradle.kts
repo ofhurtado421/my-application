@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    id("com.google.devtools.ksp")
+
 }
 
 android {
@@ -55,4 +57,21 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+    // Room
+
+    val room_version = "2.6.1" // Te sugiero la 2.6.1 que es la estable actual, la 2.8 aún es muy experimental
+
+    // El motor de Room
+    implementation("androidx.room:room-runtime:$room_version")
+
+    // El procesador de símbolos (KSP) para generar el código de la DB
+    ksp("androidx.room:room-compiler:$room_version")
+
+    // Soporte para Corrutinas de Kotlin (Vital para que no se trabe la app al guardar ventas)
+    implementation("androidx.room:room-ktx:$room_version")
+
+    // (Opcional) Para hacer pruebas unitarias de tu base de datos después
+    testImplementation("androidx.room:room-testing:$room_version")
+
 }
