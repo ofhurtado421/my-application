@@ -1,4 +1,17 @@
 package com.example.myapplication.data
 
-class ProviderEntity {
-}
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+
+@Entity (tableName = "provider")
+
+class ProviderEntity(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
+
+    val businessName: String, // Nombre de la empresa
+    val nit: String,
+    val phone: String,
+    val address: String
+)
