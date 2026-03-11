@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 
-@Entity (tableName = "provider")
+@Entity (tableName = "providers")
 
 class ProviderEntity(
     @PrimaryKey(autoGenerate = true)

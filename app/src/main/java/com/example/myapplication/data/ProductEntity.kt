@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 
-@Entity("product")
+@Entity("products")
 
 data class ProductEntity (
 
