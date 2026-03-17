@@ -36,8 +36,17 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
+
+
+
     buildFeatures {
         compose = true
+    }
+}
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
     }
 }
 
@@ -50,8 +59,10 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
-    implementation("androidx.navigation:navigation-compose:2.7.7")
-    implementation("androidx.compose.material:material-icons-extended:1.6.0")
+
+    implementation("androidx.navigation:navigation-compose:2.8.9")
+    implementation("androidx.compose.material:material-icons-extended:1.7.8")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -62,7 +73,7 @@ dependencies {
 
     // Room
 
-    val room_version = "2.6.1" // Te sugiero la 2.6.1 que es la estable actual, la 2.8 aún es muy experimental
+    val room_version = "2.7.0" // Te sugiero la 2.6.1 que es la estable actual, la 2.8 aún es muy experimental
 
     // El motor de Room
     implementation("androidx.room:room-runtime:$room_version")
