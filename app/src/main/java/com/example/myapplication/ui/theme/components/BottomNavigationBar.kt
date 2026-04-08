@@ -39,7 +39,7 @@ fun BottomNavigationBar(navController: NavController) {
     // Lista de ítems de la barra de navegación
     val items = listOf(
         BottomNavItem(
-            label = "Contactos",
+            label = "Clientes",
             icon = Icons.Filled.Contacts,
             route = AppScreens.ContactList.route
         ),

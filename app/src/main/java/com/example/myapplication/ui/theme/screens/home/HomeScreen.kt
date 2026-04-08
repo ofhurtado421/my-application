@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Store
@@ -120,7 +121,20 @@ fun HomeScreen(navController: NavController) {
                     navController.navigate(AppScreens.ProviderList.route)
                 }
             )
+            Spacer(modifier = Modifier.height(16.dp))
+
+            ModuleCard(
+                title = "Acerca de",
+                description = "Créditos y documentación",
+                icon = Icons.Filled.Info,
+                onClick = {
+                    navController.navigate(AppScreens.About.route)
+                }
+            )
+
+
         }
+
     }
 }
 

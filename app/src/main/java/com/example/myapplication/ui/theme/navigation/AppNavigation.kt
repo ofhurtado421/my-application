@@ -18,6 +18,9 @@ sealed class AppScreens(val route: String) {
     /** Pantalla de inicio con acceso a los 3 módulos */
     object Home : AppScreens("home")
 
+    // ─── Módulo creditos ───────────────────────────────────
+    object About : AppScreens("about")
+
     // ─── Módulo Contactos ──────────────────────────────────
     /** Lista de todos los contactos */
     object ContactList : AppScreens("contact_list")

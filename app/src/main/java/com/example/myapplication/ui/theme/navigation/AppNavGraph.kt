@@ -25,6 +25,7 @@ import com.example.myapplication.ui.screens.product.ProductListScreen
 import com.example.myapplication.ui.screens.provider.ProviderFormScreen
 import com.example.myapplication.ui.screens.provider.ProviderListScreen
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.myapplication.ui.theme.screens.credits.AboutScreen
 import com.example.myapplication.ui.theme.screens.splash.SplashScreen
 
 
@@ -100,6 +101,10 @@ fun AppNavGraph(navController: NavHostController) {
          */
         composable(route = AppScreens.Home.route) {
             HomeScreen(navController = navController)
+        }
+        // ─── credits──────────────────────────────────────────
+        composable(route = AppScreens.About.route) {
+            AboutScreen(navController = navController)
         }
 
         // ─── Contactos ─────────────────────────────────────
