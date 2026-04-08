@@ -32,7 +32,5 @@ data class ContactEntity(
     @ColumnInfo(name = "phone")
     val phone: String
 
-    /**
-     * @ColumnInfo, es buena práctica para tener control explícito del nombre de cada columna en la tabla.
-     */
+
 )

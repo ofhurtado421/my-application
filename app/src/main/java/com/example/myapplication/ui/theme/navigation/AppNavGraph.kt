@@ -25,6 +25,8 @@ import com.example.myapplication.ui.screens.product.ProductListScreen
 import com.example.myapplication.ui.screens.provider.ProviderFormScreen
 import com.example.myapplication.ui.screens.provider.ProviderListScreen
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.myapplication.ui.theme.screens.splash.SplashScreen
+
 
 /**
  * Grafo de navegación principal de la aplicación.
@@ -82,8 +84,15 @@ fun AppNavGraph(navController: NavHostController) {
      */
     NavHost(
         navController = navController,
-        startDestination = AppScreens.Home.route
+        startDestination = AppScreens.Splash.route
     ) {
+
+        //─── Splash Screen──────────────────────────────────────────
+
+
+        composable(route = AppScreens.Splash.route) {
+            SplashScreen(navController = navController)
+        }
 
         // ─── Home ──────────────────────────────────────────
         /**

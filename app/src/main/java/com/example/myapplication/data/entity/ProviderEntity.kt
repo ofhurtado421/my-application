@@ -10,7 +10,7 @@ import androidx.room.PrimaryKey
  * Cada instancia corresponde a una fila en dicha tabla.
  */
 @Entity(tableName = "providers")
-data class ProviderEntity( // ⚠️ Corrección: cambiado de "class" a "data class"
+data class ProviderEntity(
 
     /**
      * Identificador único del proveedor.

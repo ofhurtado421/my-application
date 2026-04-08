@@ -8,6 +8,12 @@ package com.example.myapplication.ui.navigation
  */
 sealed class AppScreens(val route: String) {
 
+
+    // ─── Módulo Splash ─────────────────────────────────────
+
+    /** Pantalla de bienvenida (Splash Screen) */
+    object Splash : AppScreens("splash")
+
     // ─── Módulo Home ───────────────────────────────────────
     /** Pantalla de inicio con acceso a los 3 módulos */
     object Home : AppScreens("home")

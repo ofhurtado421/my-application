@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
  * Almacena la información descriptiva de cada producto del catálogo.
  * Cada instancia corresponde a una fila en dicha tabla.
  */
-@Entity(tableName = "products") //
+@Entity(tableName = "products")
 data class ProductEntity(
 
     /**
