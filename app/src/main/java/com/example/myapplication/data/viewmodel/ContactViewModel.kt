@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
  */
 class ContactViewModel(private val repository: ContactRepository) : ViewModel() {
 
-    /**
+    /**kjbhj
      * Lista de todos los contactos expuesta a la UI como StateFlow.
      * StateFlow siempre tiene un valor actual (empieza con lista vacía).
      * La UI observa este Flow y se actualiza automáticamente cuando cambia.
