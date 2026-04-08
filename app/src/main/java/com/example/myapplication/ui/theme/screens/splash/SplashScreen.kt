@@ -31,7 +31,7 @@ import kotlinx.coroutines.delay
  * Pantalla de bienvenida (Splash Screen).
  * Se muestra al abrir la app durante 2 segundos con
  * una animación de aparición gradual (fade in).
- * Luego navega automáticamente al Home.
+ * Luego navega automáticamente al Home..
  *
  * @param navController Controlador de navegación.
  */
