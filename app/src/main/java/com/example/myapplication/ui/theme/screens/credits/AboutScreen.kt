@@ -88,14 +88,16 @@ fun AboutScreen(navController: NavController) {
         }
     ) { paddingValues ->
 
-        Column(
+      Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
                 .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
+            //horizontalAlignment = Alignment.End,
+            horizontalAlignment = Alignment.Start,
+            //horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
-        ) {
+        ){
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -121,7 +123,7 @@ fun AboutScreen(navController: NavController) {
 
             // ─── Título créditos ───────────────────────────
             Text(
-                text = "Desarrollado por",
+                text = "Desarrollado por:",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -148,7 +150,9 @@ fun AboutScreen(navController: NavController) {
                 text = "¿Quieres saber cómo funciona la app?",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth() // centrar text
+
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -157,7 +161,8 @@ fun AboutScreen(navController: NavController) {
                 text = "Accede al manual completo con la explicación\nde todas las funcionalidades.",
                 fontSize = 14.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
             )
 
             Spacer(modifier = Modifier.height(24.dp))
