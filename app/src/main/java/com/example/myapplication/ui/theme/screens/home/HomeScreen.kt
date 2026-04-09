@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Domain
+import androidx.compose.material.icons.filled.Groups
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
@@ -92,7 +94,7 @@ fun HomeScreen(navController: NavController) {
             ModuleCard(
                 title = "Clientes",
                 description = "Gestiona tus clientes",
-                icon = Icons.Filled.Person,
+                icon = Icons.Filled.Groups,
                 onClick = {
                     navController.navigate(AppScreens.ContactList.route)
                 }
@@ -116,13 +118,13 @@ fun HomeScreen(navController: NavController) {
             ModuleCard(
                 title = "Proveedores",
                 description = "Gestiona tus proveedores",
-                icon = Icons.Filled.Store,
+                icon = Icons.Filled.Domain,
                 onClick = {
                     navController.navigate(AppScreens.ProviderList.route)
                 }
             )
             Spacer(modifier = Modifier.height(16.dp))
-
+             // ─── Tarjeta Creditos ───────────────────────
             ModuleCard(
                 title = "Acerca de",
                 description = "Créditos y documentación",
