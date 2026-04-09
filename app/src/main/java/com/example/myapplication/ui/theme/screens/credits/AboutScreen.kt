@@ -55,7 +55,7 @@ fun AboutScreen(navController: NavController) {
 
     /**
      * Link del PDF o documentación de la app.
-     * ⚠️ Reemplaza esta URL cuando tengas el link real.
+
      */
     val documentUrl = "https://github.com/deqdeimar/Documento/blob/main/Aplicaciones%20moviles%20Pitch.pdf"
 

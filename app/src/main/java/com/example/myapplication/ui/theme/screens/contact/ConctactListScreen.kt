@@ -86,7 +86,7 @@ fun ContactListScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Contactos",
+                        text = "Clientes",
                         fontWeight = FontWeight.Bold
                     )
                 },

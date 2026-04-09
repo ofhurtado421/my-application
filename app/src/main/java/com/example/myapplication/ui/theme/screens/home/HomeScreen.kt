@@ -51,7 +51,7 @@ fun HomeScreen(navController: NavController) {
             TopAppBar(
                 title = {
                     Text(
-                        text = "Mi Aplicación",
+                        text = "Mi Negocio",
                         fontWeight = FontWeight.Bold
                     )
                 },
@@ -90,8 +90,8 @@ fun HomeScreen(navController: NavController) {
 
             // ─── Tarjeta Contactos ─────────────────────────
             ModuleCard(
-                title = "Contactos",
-                description = "Gestiona tus contactos",
+                title = "Clientes",
+                description = "Gestiona tus clientes",
                 icon = Icons.Filled.Person,
                 onClick = {
                     navController.navigate(AppScreens.ContactList.route)
