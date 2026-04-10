@@ -7,6 +7,8 @@ import androidx.room.RoomDatabase
 import com.example.myapplication.data.dao.ContactDao
 import com.example.myapplication.data.dao.ProductDao
 import com.example.myapplication.data.dao.ProviderDao
+import com.example.myapplication.data.dao.PurchaseDao
+import com.example.myapplication.data.dao.SaleDao
 
 /**
  * Clase principal de la base de datos Room.
@@ -23,9 +25,16 @@ import com.example.myapplication.data.dao.ProviderDao
     entities = [
         ContactEntity::class,
         ProductEntity::class,
-        ProviderEntity::class
+        ProviderEntity::class,
+
+        SaleEntity::class,
+        SaleDetailEntity::class,
+        PurchaseEntity::class,
+        PurchaseDetailEntity::class
+
+
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -47,6 +56,13 @@ abstract class AppDatabase : RoomDatabase() {
      * Room genera automáticamente la implementación de esta función.
      */
     abstract fun providerDao(): ProviderDao
+
+    abstract fun saleDao(): SaleDao
+
+    abstract fun purchaseDao(): PurchaseDao
+
+
+
 
     /**
      * Companion object que implementa el patrón Singleton.
@@ -76,7 +92,16 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "app_database"
-                ).build()
+
+                )
+                    /**
+                     * ⚠️ fallbackToDestructiveMigration borra y recrea
+                     * la base de datos cuando sube la versión.
+                     * Solo usar en desarrollo, no en producción.
+                     */
+                    .fallbackToDestructiveMigration()
+
+                    .build()
                 INSTANCE = instance
                 instance
             }

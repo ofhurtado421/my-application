@@ -9,13 +9,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AttachMoney
 import androidx.compose.material.icons.filled.Domain
 import androidx.compose.material.icons.filled.Groups
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.ShoppingBag
 import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material.icons.filled.Store
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -36,8 +38,7 @@ import com.example.myapplication.ui.navigation.AppScreens
 
 /**
  * Pantalla de inicio de la aplicación.
- * Muestra 3 tarjetas para acceder a cada módulo:
- * Contactos, Productos y Proveedores.
+ * Muestra tarjetas para acceder a cada módulo
  *
  * @param navController Controlador de navegación para moverse entre pantallas.
  */
@@ -64,19 +65,23 @@ fun HomeScreen(navController: NavController) {
             )
         },
         /**
-         * BottomNavigationBar: barra inferior con los 3 módulos.
-         * Permite navegar entre pantallas desde cualquier lugar.
+         * BottomNavigationBar: barra inferior con los módulos principales.
          */
         bottomBar = {
             BottomNavigationBar(navController = navController)
         }
     ) { paddingValues ->
 
+        /**
+         * verticalScroll permite hacer scroll si el contenido
+         * no cabe en la pantalla con todas las tarjetas.
+         */
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(16.dp),
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -90,18 +95,20 @@ fun HomeScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // ─── Tarjeta Contactos ─────────────────────────
+
+            // ─── Tarjeta Ventas ────────────────────────────
+            /**
+             * tarjeta para gestionar ventas a clientes.
+             */
             ModuleCard(
-                title = "Clientes",
-                description = "Gestiona tus clientes",
-                icon = Icons.Filled.Groups,
+                title = "Ventas",
+                description = "Gestiona tus ventas a clientes",
+                icon = Icons.Filled.AttachMoney,
                 onClick = {
-                    navController.navigate(AppScreens.ContactList.route)
+                    navController.navigate(AppScreens.SaleList.route)
                 }
             )
-
             Spacer(modifier = Modifier.height(16.dp))
-
             // ─── Tarjeta Productos ─────────────────────────
             ModuleCard(
                 title = "Productos",
@@ -114,6 +121,32 @@ fun HomeScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            // ─── Tarjeta Clientes ──────────────────────────
+            ModuleCard(
+                title = "Clientes",
+                description = "Gestiona tus clientes",
+                icon = Icons.Filled.Groups,
+                onClick = {
+                    navController.navigate(AppScreens.ContactList.route)
+                }
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+
+
+            // ─── Tarjeta Compras ───────────────────────────
+            /**
+             * tarjeta para gestionar compras a proveedores.
+             */
+            ModuleCard(
+                title = "Compras",
+                description = "Gestiona tus compras a proveedores",
+                icon = Icons.Filled.ShoppingBag,
+                onClick = {
+                    navController.navigate(AppScreens.PurchaseList.route)
+                }
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
             // ─── Tarjeta Proveedores ───────────────────────
             ModuleCard(
                 title = "Proveedores",
@@ -123,8 +156,13 @@ fun HomeScreen(navController: NavController) {
                     navController.navigate(AppScreens.ProviderList.route)
                 }
             )
+
             Spacer(modifier = Modifier.height(16.dp))
-             // ─── Tarjeta Creditos ───────────────────────
+
+
+
+
+            // ─── Tarjeta Créditos ──────────────────────────
             ModuleCard(
                 title = "Acerca de",
                 description = "Créditos y documentación",
@@ -134,9 +172,8 @@ fun HomeScreen(navController: NavController) {
                 }
             )
 
-
+            Spacer(modifier = Modifier.height(16.dp))
         }
-
     }
 }
 

@@ -1,9 +1,11 @@
 package com.example.myapplication.ui.components
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AttachMoney
 import androidx.compose.material.icons.filled.Contacts
 import androidx.compose.material.icons.filled.Inventory
 import androidx.compose.material.icons.filled.LocalShipping
+import androidx.compose.material.icons.filled.ShoppingBag
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -27,32 +29,34 @@ data class BottomNavItem(
 )
 
 /**
- * Barra de navegación inferior con 3 módulos principales.
- * Resalta automáticamente el ítem de la pantalla actual.
- * Al tocar un ítem navega a la pantalla correspondiente.
+ * Componente que muestra la barra de navegación inferior.
  *
  * @param navController Controlador de navegación para manejar rutas.
  */
 @Composable
 fun BottomNavigationBar(navController: NavController) {
 
-    // Lista de ítems de la barra de navegación
+    /**
+     * Lista de ítems de la barra de navegación.
+     * Cada ítem contiene un label, un ícono y una ruta asociada.
+     */
     val items = listOf(
         BottomNavItem(
             label = "Clientes",
             icon = Icons.Filled.Contacts,
             route = AppScreens.ContactList.route
         ),
+
         BottomNavItem(
-            label = "Productos",
-            icon = Icons.Filled.Inventory,
-            route = AppScreens.ProductList.route
+            label = "Ventas",
+            icon = Icons.Filled.AttachMoney,
+            route = AppScreens.SaleList.route
         ),
-        BottomNavItem(
-            label = "Proveedores",
-            icon = Icons.Filled.LocalShipping,
-            route = AppScreens.ProviderList.route
-        )
+                BottomNavItem(
+                label = "Productos",
+        icon = Icons.Filled.Inventory,
+        route = AppScreens.ProductList.route
+    )
     )
 
     /**
@@ -79,13 +83,18 @@ fun BottomNavigationBar(navController: NavController) {
                          * tenga que pasar por todas las pantallas visitadas.
                          */
                         popUpTo(AppScreens.Home.route) {
-                            saveState = true // guarda el estado de la pantalla
+                            saveState = true
                         }
-                        launchSingleTop = true  // evita duplicar la pantalla
-                        restoreState = true     // restaura el estado guardado
+                        launchSingleTop = true
+                        restoreState = true
                     }
                 },
-                icon = { Icon(imageVector = item.icon, contentDescription = item.label) },
+                icon = {
+                    Icon(
+                        imageVector = item.icon,
+                        contentDescription = item.label
+                    )
+                },
                 label = { Text(text = item.label) }
             )
         }

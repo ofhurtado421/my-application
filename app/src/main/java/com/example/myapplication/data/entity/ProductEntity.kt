@@ -69,6 +69,20 @@ data class ProductEntity(
      */
     @ColumnInfo(name = "brand")
     val brand: String,
+    /**
+     * Precio al que se le vende el producto al cliente.
+     * Ejemplo: 15000.0 (pesos colombianos)
+     */
+    @ColumnInfo(name = "sale_price")
+    val salePrice: Double = 0.0,
+
+    /**
+     * Precio al que se compra el producto al proveedor.
+     * Ejemplo: 10000.0 (pesos colombianos)
+     */
+    @ColumnInfo(name = "purchase_price")
+    val purchasePrice: Double = 0.0,
+
 
     /**
      * Indica si el producto está activo en el catálogo.

@@ -2,6 +2,7 @@ package com.example.myapplication.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -11,12 +12,18 @@ import com.example.myapplication.data.entity.AppDatabase
 import com.example.myapplication.data.repository.ContactRepository
 import com.example.myapplication.data.repository.ProductRepository
 import com.example.myapplication.data.repository.ProviderRepository
+import com.example.myapplication.data.repository.PurchaseRepository
+import com.example.myapplication.data.repository.SaleRepository
 import com.example.myapplication.data.viewmodel.ContactViewModel
 import com.example.myapplication.data.viewmodel.ProductViewModel
 import com.example.myapplication.data.viewmodel.ProviderViewModel
+import com.example.myapplication.data.viewmodel.PurchaseViewModel
+import com.example.myapplication.data.viewmodel.SaleViewModel
 import com.example.myapplication.data.viewmodel.factory.ContactViewModelFactory
 import com.example.myapplication.data.viewmodel.factory.ProductViewModelFactory
 import com.example.myapplication.data.viewmodel.factory.ProviderViewModelFactory
+import com.example.myapplication.data.viewmodel.factory.PurchaseViewModelFactory
+import com.example.myapplication.data.viewmodel.factory.SaleViewModelFactory
 import com.example.myapplication.ui.screens.contact.ContactFormScreen
 import com.example.myapplication.ui.screens.contact.ContactListScreen
 import com.example.myapplication.ui.screens.home.HomeScreen
@@ -24,10 +31,12 @@ import com.example.myapplication.ui.screens.product.ProductFormScreen
 import com.example.myapplication.ui.screens.product.ProductListScreen
 import com.example.myapplication.ui.screens.provider.ProviderFormScreen
 import com.example.myapplication.ui.screens.provider.ProviderListScreen
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.myapplication.ui.screens.purchase.PurchaseFormScreen
+import com.example.myapplication.ui.screens.purchase.PurchaseListScreen
+import com.example.myapplication.ui.screens.sale.SaleFormScreen
+import com.example.myapplication.ui.screens.sale.SaleListScreen
 import com.example.myapplication.ui.theme.screens.credits.AboutScreen
 import com.example.myapplication.ui.theme.screens.splash.SplashScreen
-
 
 /**
  * Grafo de navegación principal de la aplicación.
@@ -40,34 +49,20 @@ import com.example.myapplication.ui.theme.screens.splash.SplashScreen
 @Composable
 fun AppNavGraph(navController: NavHostController) {
 
-    // ─── Base de datos ─────────────────────────────────────
-    /**
-     * Obtiene el contexto actual para inicializar la base de datos.
-     * LocalContext.current es la forma de acceder al contexto en Compose.
-     */
     val context = LocalContext.current
-
-    /**
-     * Obtiene la instancia única de la base de datos (Singleton).
-     * Si ya existe la reutiliza, si no la crea.
-     */
     val database = AppDatabase.getInstance(context)
 
     // ─── Repositorios ──────────────────────────────────────
-    /**
-     * Crea los repositorios pasándoles los DAOs correspondientes.
-     * remember evita recrearlos cada vez que la pantalla se redibuje.
-     */
     val contactRepository = ContactRepository(database.contactDao())
     val productRepository = ProductRepository(database.productDao())
     val providerRepository = ProviderRepository(database.providerDao())
+    /**
+     * ✅ Nuevos repositorios de ventas y compras
+     */
+    val saleRepository = SaleRepository(database.saleDao())
+    val purchaseRepository = PurchaseRepository(database.purchaseDao())
 
     // ─── ViewModels ────────────────────────────────────────
-    /**
-     * Crea los ViewModels usando sus respectivos Factories.
-     * viewModel() de Compose se encarga de que sobrevivan
-     * a los cambios de configuración como rotar la pantalla.
-     */
     val contactViewModel: ContactViewModel = viewModel(
         factory = ContactViewModelFactory(contactRepository)
     )
@@ -77,53 +72,44 @@ fun AppNavGraph(navController: NavHostController) {
     val providerViewModel: ProviderViewModel = viewModel(
         factory = ProviderViewModelFactory(providerRepository)
     )
+    /**
+     * ✅ Nuevos ViewModels de ventas y compras
+     */
+    val saleViewModel: SaleViewModel = viewModel(
+        factory = SaleViewModelFactory(saleRepository)
+    )
+    val purchaseViewModel: PurchaseViewModel = viewModel(
+        factory = PurchaseViewModelFactory(purchaseRepository)
+    )
 
     // ─── NavHost ───────────────────────────────────────────
-    /**
-     * NavHost es el contenedor principal de navegación.
-     * startDestination define la primera pantalla que se muestra.
-     */
     NavHost(
         navController = navController,
         startDestination = AppScreens.Splash.route
     ) {
 
-        //─── Splash Screen──────────────────────────────────────────
-
-
+        // ─── Splash ────────────────────────────────────────
         composable(route = AppScreens.Splash.route) {
             SplashScreen(navController = navController)
         }
 
         // ─── Home ──────────────────────────────────────────
-        /**
-         * Pantalla de inicio con acceso a los 3 módulos.
-         */
         composable(route = AppScreens.Home.route) {
             HomeScreen(navController = navController)
         }
-        // ─── credits──────────────────────────────────────────
+
+        // ─── Créditos ──────────────────────────────────────
         composable(route = AppScreens.About.route) {
             AboutScreen(navController = navController)
         }
 
         // ─── Contactos ─────────────────────────────────────
-        /**
-         * Lista de contactos.
-         */
         composable(route = AppScreens.ContactList.route) {
             ContactListScreen(
                 navController = navController,
                 viewModel = contactViewModel
             )
         }
-
-        /**
-         * Formulario de contacto.
-         * Recibe contactId como argumento:
-         *   -1  → modo agregar
-         *   >0  → modo editar
-         */
         composable(
             route = AppScreens.ContactForm.route,
             arguments = listOf(
@@ -133,10 +119,6 @@ fun AppNavGraph(navController: NavHostController) {
                 }
             )
         ) { backStackEntry ->
-            /**
-             * Extrae el argumento contactId del backStackEntry.
-             * Si no viene, usa -1 como valor por defecto.
-             */
             val contactId = backStackEntry.arguments?.getInt("contactId") ?: -1
             ContactFormScreen(
                 navController = navController,
@@ -152,7 +134,6 @@ fun AppNavGraph(navController: NavHostController) {
                 viewModel = productViewModel
             )
         }
-
         composable(
             route = AppScreens.ProductForm.route,
             arguments = listOf(
@@ -177,7 +158,6 @@ fun AppNavGraph(navController: NavHostController) {
                 viewModel = providerViewModel
             )
         }
-
         composable(
             route = AppScreens.ProviderForm.route,
             arguments = listOf(
@@ -192,6 +172,70 @@ fun AppNavGraph(navController: NavHostController) {
                 navController = navController,
                 viewModel = providerViewModel,
                 providerId = providerId
+            )
+        }
+
+        // ─── Ventas ────────────────────────────────────────
+        /**
+         * Lista de todas las ventas.
+         */
+        composable(route = AppScreens.SaleList.route) {
+            SaleListScreen(
+                navController = navController,
+                viewModel = saleViewModel
+            )
+        }
+        /**
+         * Formulario para crear una nueva venta.
+         * Recibe saleId como argumento:
+         *   -1  → nueva venta
+         *   >0  → editar venta existente
+         */
+        composable(
+            route = AppScreens.SaleForm.route,
+            arguments = listOf(
+                navArgument("saleId") {
+                    type = NavType.IntType
+                    defaultValue = -1
+                }
+            )
+        ) {
+            SaleFormScreen(
+                navController = navController,
+                saleViewModel = saleViewModel,
+                productViewModel = productViewModel
+            )
+        }
+
+        // ─── Compras ───────────────────────────────────────
+        /**
+         * Lista de todas las compras.
+         */
+        composable(route = AppScreens.PurchaseList.route) {
+            PurchaseListScreen(
+                navController = navController,
+                viewModel = purchaseViewModel
+            )
+        }
+        /**
+         * Formulario para crear una nueva compra.
+         * Recibe purchaseId como argumento:
+         *   -1  → nueva compra
+         *   >0  → editar compra existente
+         */
+        composable(
+            route = AppScreens.PurchaseForm.route,
+            arguments = listOf(
+                navArgument("purchaseId") {
+                    type = NavType.IntType
+                    defaultValue = -1
+                }
+            )
+        ) {
+            PurchaseFormScreen(
+                navController = navController,
+                purchaseViewModel = purchaseViewModel,
+                productViewModel = productViewModel
             )
         }
     }
