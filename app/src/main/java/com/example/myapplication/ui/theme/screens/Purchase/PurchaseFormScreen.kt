@@ -68,7 +68,6 @@ fun PurchaseFormScreen(
     purchaseViewModel: PurchaseViewModel,
     productViewModel: ProductViewModel
 ) {
-    // ─── Estados del formulario ────────────────────────────
     var providerName by remember { mutableStateOf("") }
     var notes by remember { mutableStateOf("") }
     var searchProduct by remember { mutableStateOf("") }
@@ -161,11 +160,6 @@ fun PurchaseFormScreen(
 
                     Spacer(modifier = Modifier.width(8.dp))
 
-                    /**
-                     * Busca el producto por código de barras o nombre.
-                     * Usa el precio de compra (purchasePrice) en lugar
-                     * del precio de venta.
-                     */
                     IconButton(
                         onClick = {
                             val query = searchProduct.trim()
@@ -193,8 +187,8 @@ fun PurchaseFormScreen(
                                             productName = product.name,
                                             quantity = 1,
                                             /**
-                                             * ✅ Usa purchasePrice (precio de compra)
-                                             * no salePrice (precio de venta)
+                                             * Usa purchasePrice (precio de compra)
+                                             * no salePrice (precio de venta).
                                              */
                                             unitPrice = product.purchasePrice,
                                             subtotal = product.purchasePrice
@@ -294,10 +288,15 @@ fun PurchaseFormScreen(
                         if (providerName.isBlank() || purchaseDetails.isEmpty()) {
                             showErrors = true
                         } else {
+                            /**
+                             * ✅ Corrección: se usa providerName directamente
+                             * en lugar de providerId = 0 que causaba el error
+                             * de ForeignKey constraint failed.
+                             */
                             val purchase = PurchaseEntity(
-                                providerId = 0,
+                                providerName = providerName.trim(),
                                 total = total,
-                                notes = "$providerName - $notes".trim()
+                                notes = notes.trim()
                             )
                             purchaseViewModel.insertPurchaseWithDetails(
                                 purchase,

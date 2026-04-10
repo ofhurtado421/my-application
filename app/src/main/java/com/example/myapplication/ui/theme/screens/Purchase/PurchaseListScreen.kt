@@ -13,7 +13,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
@@ -66,10 +65,11 @@ fun PurchaseListScreen(
     var searchQuery by remember { mutableStateOf("") }
 
     /**
-     * Filtra compras por notas.
+     * Filtra compras por nombre del proveedor o notas.
      */
     val filteredPurchases = purchases.filter { purchase ->
-        purchase.notes.contains(searchQuery, ignoreCase = true)
+        purchase.providerName.contains(searchQuery, ignoreCase = true) ||
+                purchase.notes.contains(searchQuery, ignoreCase = true)
     }
 
     Scaffold(
@@ -78,15 +78,10 @@ fun PurchaseListScreen(
                 title = {
                     Text(text = "Compras", fontWeight = FontWeight.Bold)
                 },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = "Regresar",
-                            tint = MaterialTheme.colorScheme.onPrimary
-                        )
-                    }
-                },
+                /**
+                 * ✅ Se quitó el botón de regresar porque es una
+                 * pantalla principal accesible desde el BottomNav.
+                 */
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = MaterialTheme.colorScheme.onPrimary
@@ -119,11 +114,15 @@ fun PurchaseListScreen(
                 .padding(16.dp)
         ) {
 
+            /**
+             * Barra de búsqueda que filtra por
+             * nombre del proveedor o notas.
+             */
             OutlinedTextField(
                 value = searchQuery,
                 onValueChange = { searchQuery = it },
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = { Text("Buscar por notas...") },
+                placeholder = { Text("Buscar por proveedor o notas...") },
                 leadingIcon = {
                     Icon(imageVector = Icons.Filled.Search, contentDescription = "Buscar")
                 },
@@ -165,7 +164,7 @@ fun PurchaseListScreen(
 
 /**
  * Tarjeta que muestra el resumen de una compra.
- * Muestra fecha, proveedor y total.
+ * Muestra número, proveedor, fecha y total.
  *
  * @param purchase La compra a mostrar.
  * @param onDeleteClick Acción al tocar eliminar.
@@ -199,6 +198,16 @@ fun PurchaseItem(
                     text = "Compra #${purchase.id}",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
+                )
+                /**
+                 * ✅ Muestra el nombre del proveedor
+                 * que antes no aparecía.
+                 */
+                Text(
+                    text = "Proveedor: ${purchase.providerName}",
+                    style = MaterialTheme.typography.bodySmall,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(
                     text = "Fecha: $formattedDate",

@@ -3,44 +3,30 @@ package com.example.myapplication.data.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.ColumnInfo
-import androidx.room.ForeignKey
 
 /**
  * Entidad que representa la tabla "sales" en la base de datos.
  * Almacena el encabezado de cada venta realizada.
- * Cada venta está asociada a un contacto (cliente).
- *
- * Relación:
- * - Una venta pertenece a un ContactEntity (cliente)
- * - Una venta tiene muchos SaleDetailEntity (productos)
+ * El cliente se guarda como texto para evitar
+ * restricciones de llave foránea.
  */
-@Entity(
-    tableName = "sales",
-    foreignKeys = [
-        ForeignKey(
-            entity = ContactEntity::class,
-            parentColumns = ["id"],
-            childColumns = ["contact_id"],
-            /**
-             * onDelete RESTRICT evita borrar un cliente
-             * si tiene ventas asociadas.
-             */
-            onDelete = ForeignKey.RESTRICT
-        )
-    ]
-)
+@Entity(tableName = "sales")
 data class SaleEntity(
 
+    /**
+     * Identificador único de la venta.
+     * Generado automáticamente por Room.
+     */
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     val id: Int = 0,
 
     /**
-     * ID del cliente al que se le realizó la venta.
-     * Referencia a ContactEntity.id
+     * Nombre del cliente al que se le realizó la venta.
+     * Se guarda como texto para no depender de la tabla contacts.
      */
-    @ColumnInfo(name = "contact_id")
-    val contactId: Int,
+    @ColumnInfo(name = "client_name")
+    val clientName: String = "",
 
     /**
      * Fecha de la venta en formato timestamp (milisegundos).

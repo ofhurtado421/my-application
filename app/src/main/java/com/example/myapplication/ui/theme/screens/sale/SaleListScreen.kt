@@ -9,12 +9,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
@@ -68,9 +66,11 @@ fun SaleListScreen(
 
     /**
      * Filtra ventas por nombre del cliente o notas.
+     * ✅ Ahora busca también por clientName.
      */
     val filteredSales = sales.filter { sale ->
-        sale.notes.contains(searchQuery, ignoreCase = true)
+        sale.clientName.contains(searchQuery, ignoreCase = true) ||
+                sale.notes.contains(searchQuery, ignoreCase = true)
     }
 
     Scaffold(
@@ -79,15 +79,10 @@ fun SaleListScreen(
                 title = {
                     Text(text = "Ventas", fontWeight = FontWeight.Bold)
                 },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = "Regresar",
-                            tint = MaterialTheme.colorScheme.onPrimary
-                        )
-                    }
-                },
+                /**
+                 * ✅ Se quitó el botón de regresar porque es una
+                 * pantalla principal accesible desde el BottomNav.
+                 */
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = MaterialTheme.colorScheme.onPrimary
@@ -120,11 +115,15 @@ fun SaleListScreen(
                 .padding(16.dp)
         ) {
 
+            /**
+             * Barra de búsqueda que filtra por
+             * nombre del cliente o notas.
+             */
             OutlinedTextField(
                 value = searchQuery,
                 onValueChange = { searchQuery = it },
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = { Text("Buscar por notas...") },
+                placeholder = { Text("Buscar por cliente o notas...") },
                 leadingIcon = {
                     Icon(imageVector = Icons.Filled.Search, contentDescription = "Buscar")
                 },
@@ -166,7 +165,7 @@ fun SaleListScreen(
 
 /**
  * Tarjeta que muestra el resumen de una venta.
- * Muestra fecha, cliente y total.
+ * Muestra número, cliente, fecha y total.
  *
  * @param sale La venta a mostrar.
  * @param onDeleteClick Acción al tocar eliminar.
@@ -209,6 +208,16 @@ fun SaleItem(
                     text = "Venta #${sale.id}",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
+                )
+                /**
+                 * ✅ Muestra el nombre del cliente
+                 * que antes no aparecía.
+                 */
+                Text(
+                    text = "Cliente: ${sale.clientName}",
+                    style = MaterialTheme.typography.bodySmall,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(
                     text = "Fecha: $formattedDate",

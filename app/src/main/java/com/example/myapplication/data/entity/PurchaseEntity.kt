@@ -3,42 +3,34 @@ package com.example.myapplication.data.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.ColumnInfo
-import androidx.room.ForeignKey
 
 /**
  * Entidad que representa la tabla "purchases" en la base de datos.
  * Almacena el encabezado de cada compra realizada a un proveedor.
- *
- * Relación:
- * - Una compra pertenece a un ProviderEntity (proveedor)
- * - Una compra tiene muchos PurchaseDetailEntity (productos)
+ * El proveedor se guarda como texto para evitar
+ * restricciones de llave foránea.
  */
-@Entity(
-    tableName = "purchases",
-    foreignKeys = [
-        ForeignKey(
-            entity = ProviderEntity::class,
-            parentColumns = ["id"],
-            childColumns = ["provider_id"],
-            onDelete = ForeignKey.RESTRICT
-        )
-    ]
-)
+@Entity(tableName = "purchases")
 data class PurchaseEntity(
 
+    /**
+     * Identificador único de la compra.
+     * Generado automáticamente por Room.
+     */
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     val id: Int = 0,
 
     /**
-     * ID del proveedor al que se le realizó la compra.
-     * Referencia a ProviderEntity.id
+     * Nombre del proveedor al que se le realizó la compra.
+     * Se guarda como texto para no depender de la tabla providers.
      */
-    @ColumnInfo(name = "provider_id")
-    val providerId: Int,
+    @ColumnInfo(name = "provider_name")
+    val providerName: String = "",
 
     /**
      * Fecha de la compra en formato timestamp (milisegundos).
+     * Se obtiene con System.currentTimeMillis()
      */
     @ColumnInfo(name = "date")
     val date: Long = System.currentTimeMillis(),

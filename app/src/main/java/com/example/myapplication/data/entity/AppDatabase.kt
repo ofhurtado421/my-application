@@ -1,14 +1,19 @@
+
 package com.example.myapplication.data.entity
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.myapplication.data.dao.ContactDao
 import com.example.myapplication.data.dao.ProductDao
 import com.example.myapplication.data.dao.ProviderDao
 import com.example.myapplication.data.dao.PurchaseDao
 import com.example.myapplication.data.dao.SaleDao
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 /**
  * Clase principal de la base de datos Room.
@@ -18,89 +23,84 @@ import com.example.myapplication.data.dao.SaleDao
  *   - entities: lista de todas las tablas de la base de datos
  *   - version: versión de la base de datos, se incrementa cada vez
  *              que se modifica la estructura de alguna tabla
- *   - exportSchema: si es true guarda un historial del esquema en un archivo JSON,
- *                   false para proyectos simples o en desarrollo
+ *   - exportSchema: false para proyectos simples o en desarrollo
  */
 @Database(
     entities = [
         ContactEntity::class,
         ProductEntity::class,
         ProviderEntity::class,
-
         SaleEntity::class,
         SaleDetailEntity::class,
         PurchaseEntity::class,
         PurchaseDetailEntity::class
-
-
     ],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
 
     /**
      * Expone el DAO de contactos.
-     * Room genera automáticamente la implementación de esta función.
      */
     abstract fun contactDao(): ContactDao
 
     /**
      * Expone el DAO de productos.
-     * Room genera automáticamente la implementación de esta función.
      */
     abstract fun productDao(): ProductDao
 
     /**
      * Expone el DAO de proveedores.
-     * Room genera automáticamente la implementación de esta función.
      */
     abstract fun providerDao(): ProviderDao
 
+    /**
+     * Expone el DAO de ventas.
+     */
     abstract fun saleDao(): SaleDao
 
+    /**
+     * Expone el DAO de compras.
+     */
     abstract fun purchaseDao(): PurchaseDao
 
-
-
-
-    /**
-     * Companion object que implementa el patrón Singleton.
-     * Garantiza que solo exista UNA instancia de la base de datos
-     * en toda la aplicación, evitando problemas de concurrencia
-     * y uso innecesario de memoria.
-     */
     companion object {
 
-        /**
-         * @Volatile garantiza que el valor de INSTANCE sea siempre
-         * el más actualizado y visible para todos los hilos.
-         */
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
-        /**
-         * Retorna la instancia única de la base de datos.
-         * Si no existe, la crea. Si ya existe, la reutiliza.
-         * @param context Se usa el applicationContext para evitar
-         *                memory leaks con Activities o Fragments.
-         * @return La instancia única de AppDatabase.
-         */
         fun getInstance(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
                     "app_database"
-
                 )
-                    /**
-                     * ⚠️ fallbackToDestructiveMigration borra y recrea
-                     * la base de datos cuando sube la versión.
-                     * Solo usar en desarrollo, no en producción.
-                     */
                     .fallbackToDestructiveMigration()
-
+                    /**
+                     * ✅ addCallback ejecuta código cuando la base
+                     * de datos se crea por primera vez.
+                     * onCreate solo se llama UNA vez al instalar la app.
+                     */
+                    .addCallback(object : RoomDatabase.Callback() {
+                        override fun onCreate(db: SupportSQLiteDatabase) {
+                            super.onCreate(db)
+                            /**
+                             * Lanza una corrutina en segundo plano
+                             * para insertar los datos sin bloquear
+                             * el hilo principal.
+                             */
+                            CoroutineScope(Dispatchers.IO).launch {
+                                val database = getInstance(context)
+                                DatabaseSeeder(
+                                    productDao = database.productDao(),
+                                    providerDao = database.providerDao(),
+                                    contactDao = database.contactDao()
+                                ).seed()
+                            }
+                        }
+                    })
                     .build()
                 INSTANCE = instance
                 instance

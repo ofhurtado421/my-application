@@ -18,7 +18,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
@@ -313,14 +312,11 @@ fun SaleFormScreen(
                         if (clientName.isBlank() || saleDetails.isEmpty()) {
                             showErrors = true
                         } else {
-                            /**
-                             * Crea el encabezado de la venta con el
-                             * cliente, total calculado y notas.
-                             */
+
                             val sale = SaleEntity(
-                                contactId = 0,
+                                clientName = clientName.trim(),
                                 total = total,
-                                notes = "$clientName - $notes".trim()
+                                notes = notes.trim()
                             )
                             saleViewModel.insertSaleWithDetails(sale, saleDetails.toList())
                             navController.popBackStack()
@@ -382,14 +378,12 @@ fun SaleDetailItem(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // Nombre del producto
                 Text(
                     text = detail.productName,
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.weight(1f)
                 )
-                // Botón eliminar
                 IconButton(onClick = onRemove) {
                     Icon(
                         imageVector = Icons.Filled.Delete,
@@ -404,19 +398,13 @@ fun SaleDetailItem(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // Precio unitario
                 Text(
                     text = "Precio: ${currencyFormat.format(detail.unitPrice)}",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
 
-                // Controles de cantidad
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    /**
-                     * Botón para reducir cantidad.
-                     * Mínimo 1 unidad.
-                     */
                     OutlinedButton(
                         onClick = { if (detail.quantity > 1) onQuantityChange(detail.quantity - 1) },
                         modifier = Modifier.size(36.dp),
@@ -431,7 +419,6 @@ fun SaleDetailItem(
                         fontWeight = FontWeight.Bold
                     )
 
-                    // Botón para aumentar cantidad
                     OutlinedButton(
                         onClick = { onQuantityChange(detail.quantity + 1) },
                         modifier = Modifier.size(36.dp),
@@ -441,7 +428,6 @@ fun SaleDetailItem(
                     }
                 }
 
-                // Subtotal
                 Text(
                     text = currencyFormat.format(detail.subtotal),
                     style = MaterialTheme.typography.bodyMedium,
