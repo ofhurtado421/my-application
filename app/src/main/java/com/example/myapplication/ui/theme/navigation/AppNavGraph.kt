@@ -57,7 +57,7 @@ fun AppNavGraph(navController: NavHostController) {
     val productRepository = ProductRepository(database.productDao())
     val providerRepository = ProviderRepository(database.providerDao())
     /**
-     * ✅ Nuevos repositorios de ventas y compras
+     * repositorios de ventas y compras
      */
     val saleRepository = SaleRepository(database.saleDao())
     val purchaseRepository = PurchaseRepository(database.purchaseDao())
@@ -73,7 +73,7 @@ fun AppNavGraph(navController: NavHostController) {
         factory = ProviderViewModelFactory(providerRepository)
     )
     /**
-     * ✅ Nuevos ViewModels de ventas y compras
+     *ViewModels de ventas y compras
      */
     val saleViewModel: SaleViewModel = viewModel(
         factory = SaleViewModelFactory(saleRepository)
