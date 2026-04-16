@@ -79,7 +79,7 @@ abstract class AppDatabase : RoomDatabase() {
                 )
                     .fallbackToDestructiveMigration()
                     /**
-                     * ✅ addCallback ejecuta código cuando la base
+                     * addCallback ejecuta código cuando la base
                      * de datos se crea por primera vez.
                      * onCreate solo se llama UNA vez al instalar la app.
                      */
