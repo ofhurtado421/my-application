@@ -41,6 +41,7 @@ import com.example.myapplication.ui.theme.screens.splash.SplashScreen
 /**
  * Grafo de navegación principal de la aplicación.
  * Conecta todas las pantallas y define cómo se navega entre ellas.
+ *
  * También inicializa la base de datos, repositorios y ViewModels
  * que se comparten entre las pantallas.
  *
