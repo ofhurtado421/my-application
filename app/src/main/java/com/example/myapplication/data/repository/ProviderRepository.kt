@@ -13,25 +13,15 @@ import kotlinx.coroutines.flow.Flow
  */
 class ProviderRepository(private val providerDao: ProviderDao) {
 
-    /**
-     * Retorna todos los proveedores como un Flow reactivo,
-     * ordenados alfabéticamente por nombre comercial (A-Z).
-     * La UI se actualizará automáticamente cada vez que haya cambios.
-     */
+
     val allProviders: Flow<List<ProviderEntity>> = providerDao.getAllProviders()
 
-    /**
-     * Inserta un nuevo proveedor en la base de datos.
-     * @param provider El proveedor a insertar.
-     */
+
     suspend fun insert(provider: ProviderEntity) {
         providerDao.insert(provider)
     }
 
-    /**
-     * Actualiza un proveedor existente en la base de datos.
-     * @param provider El proveedor con los datos actualizados.
-     */
+
     suspend fun update(provider: ProviderEntity) {
         providerDao.update(provider)
     }

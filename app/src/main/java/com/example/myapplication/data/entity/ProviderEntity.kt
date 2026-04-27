@@ -12,11 +12,6 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "providers")
 data class ProviderEntity(
 
-    /**
-     * Identificador único del proveedor.
-     * Generado automáticamente de forma incremental por Room.
-     * No es necesario asignarlo al crear un proveedor.
-     */
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     val id: Int = 0,
