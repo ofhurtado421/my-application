@@ -13,8 +13,8 @@ import kotlinx.coroutines.flow.Flow
  */
 class ProviderRepository(private val providerDao: ProviderDao) {
 
-
     val allProviders: Flow<List<ProviderEntity>> = providerDao.getAllProviders()
+
 
 
     suspend fun insert(provider: ProviderEntity) {
